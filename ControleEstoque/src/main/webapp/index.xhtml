@@ -170,7 +170,7 @@
             <h:inputText id="quantidade" value="#{jsfEstoque.novoProduto.quantidade}" required="true" /><br />
             <label for="preco">Preço:</label>
             <h:inputText id="preco" value="#{jsfEstoque.novoProduto.preco}" required="true" /><br />
-            <h:commandButton value="Adicionar" action="#{jsfEstoque.adicionarProduto}" styleClass="btn-adicionar" />
+            <h:commandButton value="Adicionar" action="#{jsfEstoque.adicionarProduto}" />
         </h:form>
     </div>
 
@@ -187,6 +187,17 @@
         </h:form>
     </div>
 
+    <!-- Seção para teste de concorrência -->
+    <div class="section">
+        <h2>Teste de Concorrência</h2>
+        <h:form>
+            <label for="numeroThreads">Número de Threads:</label>
+            <h:inputText id="numeroThreads" value="#{jsfEstoque.numeroThreads}" required="true" /><br />
+            <h:commandButton value="Iniciar Teste" action="#{jsfEstoque.iniciarTesteConcorrencia}" styleClass="btn-teste" />
+        </h:form>
+    </div>
+    
+   
     <!-- Seção para visualizar o estoque -->
     <div class="section">
         <h2>Produtos em Estoque</h2>
@@ -210,7 +221,7 @@
         </h:dataTable>
     </div>
 
-    <!-- Seção para visualizar as transações -->
+     <!-- Seção para visualizar as transações -->
     <div class="section">
         <h2>Transações Realizadas</h2>
         <h:dataTable value="#{jsfEstoque.transacoes}" var="transacao" styleClass="tabela-transacoes">
