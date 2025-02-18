@@ -1,0 +1,10 @@
+br\TesteConcorrencia$TransacaoAleatoria.class
+br\Transacao.class
+br\RemoteInterface.class
+br\LockManager.class
+br\EJBEstoque.class
+br\Produto.class
+br\edu\utfpr\JakartaRestConfiguration.class
+br\TesteConcorrencia.class
+br\edu\utfpr\resources\JakartaEE10Resource.class
+br\JSFEstoque.class

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Controle de Estoque</title>
+    <style>
+        /* Reset básico para remover margens e paddings padrão */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+/* Estilo global do corpo da página */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Estilo do cabeçalho */
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+
+        /* Estilo das seções */
+        .section {
+            background-color: #ffffff;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilo dos labels e inputs */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        /* Estilo dos botões */
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:active {
+            background-color: #1c6ea4;
+        }
+
+        /* Estilo do botão de vender (diferente do botão de comprar) */
+        button:nth-of-type(2) {
+            background-color: #e74c3c;
+        }
+
+        button:nth-of-type(2):hover {
+            background-color: #c0392b;
+        }
+
+        button:nth-of-type(2):active {
+            background-color: #a5281b;
+        }
+
+        /* Estilo das tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        td {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Estilo das linhas da tabela */
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Estilo para o botão de adicionar */
+        button[onclick="adicionarProduto()"] {
+            background-color: #2ecc71;
+        }
+
+        button[onclick="adicionarProduto()"]:hover {
+            background-color: #27ae60;
+        }
+
+        button[onclick="adicionarProduto()"]:active {
+            background-color: #219653;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h1>Controle de Estoque</h1>
+
+    <!-- Seção para adicionar produto -->
+    <div class="section">
+        <h2>Cadastrar Produto</h2>
+        <h:form>
+            <label for="nome">Nome:</label>
+            <h:inputText id="nome" value="#{jsfEstoque.novoProduto.nome}" required="true" /><br />
+            <label for="quantidade">Quantidade:</label>
+            <h:inputText id="quantidade" value="#{jsfEstoque.novoProduto.quantidade}" required="true" /><br />
+            <label for="preco">Preço:</label>
+            <h:inputText id="preco" value="#{jsfEstoque.novoProduto.preco}" required="true" /><br />
+            <h:commandButton value="Adicionar" action="#{jsfEstoque.adicionarProduto}" styleClass="btn-adicionar" />
+        </h:form>
+    </div>
+
+    <!-- Seção para comprar/vender produto -->
+    <div class="section">
+        <h2>Comprar/Vender Produto</h2>
+        <h:form>
+            <label for="produtoId">ID do Produto:</label>
+            <h:inputText id="produtoId" value="#{jsfEstoque.produtoId}" required="true" /><br />
+            <label for="quantidadeCompraVenda">Quantidade:</label>
+            <h:inputText id="quantidadeCompraVenda" value="#{jsfEstoque.quantidade}" required="true" /><br />
+            <h:commandButton value="Comprar" action="#{jsfEstoque.comprarProduto}" styleClass="btn-comprar" />
+            <h:commandButton value="Vender" action="#{jsfEstoque.venderProduto}" styleClass="btn-vender" />
+        </h:form>
+    </div>
+
+    <!-- Seção para visualizar o estoque -->
+    <div class="section">
+        <h2>Produtos em Estoque</h2>
+        <h:dataTable value="#{jsfEstoque.produtos}" var="produto" styleClass="tabela-produtos">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                #{produto.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nome</f:facet>
+                #{produto.nome}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Quantidade</f:facet>
+                #{produto.quantidade}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Preço</f:facet>
+                #{produto.preco}
+            </h:column>
+        </h:dataTable>
+    </div>
+
+    <!-- Seção para visualizar as transações -->
+    <div class="section">
+        <h2>Transações Realizadas</h2>
+        <h:dataTable value="#{jsfEstoque.transacoes}" var="transacao" styleClass="tabela-transacoes">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                #{transacao.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Produto ID</f:facet>
+                #{transacao.produtoId}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipo</f:facet>
+                #{transacao.tipo}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Quantidade</f:facet>
+                #{transacao.quantidade}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Data</f:facet>
+                #{transacao.data}
+            </h:column>
+        </h:dataTable>
+    </div>
+</h:body>
+</html>
